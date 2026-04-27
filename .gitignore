@@ -2,3 +2,5 @@
 .metadata/
 
 01_led_blink/01-ledblink/Debug/
+
+pattern_led_blink/Debug/
