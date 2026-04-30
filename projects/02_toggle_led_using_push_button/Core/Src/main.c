@@ -71,7 +71,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+   HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -92,14 +92,27 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  GPIO_PinState lastState = GPIO_PIN_RESET;
+  uint8_t ledState = 0;
+
   while (1)
   {
-    /* USER CODE END WHILE */
+      GPIO_PinState current = HAL_GPIO_ReadPin(PA1_PUSH_BUTTON_GPIO_Port, GPIO_PIN_1);
 
-    /* USER CODE BEGIN 3 */
+      if (current == GPIO_PIN_SET && lastState == GPIO_PIN_RESET)
+      {
+          HAL_Delay(20); // debounce
+          ledState = !ledState;
+
+          HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13,ledState ? GPIO_PIN_SET : GPIO_PIN_RESET);
+      }
+
+      lastState = current;
   }
-  /* USER CODE END 3 */
 }
+
+
+
 
 /**
   * @brief System Clock Configuration
